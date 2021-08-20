@@ -1,5 +1,6 @@
 package SecondSolution;
 
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -7,6 +8,8 @@ public class Calculator {
     static int number1, number2;
     static char operation;
     static int result = 0;
+    static String [] rome = {"O", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"};
+    static boolean langRome = false;
 
 
     private static int romeToArab (String rome) {
@@ -39,7 +42,6 @@ public class Calculator {
     }
 
     private static String arabToRome (int numArabian) {
-        String [] rome = {"O", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"};
         final String s = rome[numArabian];
         return s;
     }
@@ -56,24 +58,31 @@ public class Calculator {
                 if (symbols.length != 3) {
                     throw new Exception("Количество цифр больше 2-х или нет пробелов");
                 }
-                for (int i = 0; i < symbols.length; i++) {
-                    number1 = Integer.parseInt(symbols[0]);
-                    number2 = Integer.parseInt(symbols[2]);
+                String[] numbers = {symbols[0], symbols[2]};
+                for (String numbers1 : numbers) {
+                    if (Arrays.asList(rome).contains(numbers1)) {
+                        langRome = true; }
 
-
-                    if (symbols[1].equals("+")) {
-                        operation = '+';
-                    } else if (symbols[1].equals("-")) {
-                        operation = '-';
-                    } else if (symbols[1].equals("*")) {
-                        operation = '*';
-                    } else if (symbols[1].equals("/")) {
-                        operation = '/';
+                    if (langRome == true) {
+                        number1 = romeToArab(symbols[0]);
+                        number2 = romeToArab(symbols[2]);
                     }
-                    else {
-                        throw new IllegalArgumentException("Неверный знак операции");
+                    if (langRome == false) {
+                        number1 = Integer.parseInt(symbols[0]);
+                        number2 = Integer.parseInt(symbols[2]);
                     }
-                }
+                        if (symbols[1].equals("+")) {
+                            operation = '+';
+                        } else if (symbols[1].equals("-")) {
+                            operation = '-';
+                        } else if (symbols[1].equals("*")) {
+                            operation = '*';
+                        } else if (symbols[1].equals("/")) {
+                            operation = '/';
+                        } else {
+                            throw new IllegalArgumentException("Неверный знак операции");
+                        }
+                    }
 
                 result = calculate(number1, number2, operation);
             } catch (Exception e) {
