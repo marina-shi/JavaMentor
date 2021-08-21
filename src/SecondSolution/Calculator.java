@@ -8,8 +8,15 @@ public class Calculator {
     static int number1, number2;
     static char operation;
     static int result = 0;
-    static String [] rome = {"O", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"};
+    static String [] rome = {"O", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX",
+            "XXI", "XXII", "XXIII", "XXIV", "XXV", "XXVI", "XXVII", "XXVIII", "XXIX", "XXX", "XXXI", "XXXII", "XXXIII", "XXXIV", "XXXV", "XXXVI", "XXXVII", "XXXVIII", "XXXIX", "XL",
+            "XLI", "XLII", "XLIII", "XLIV", "XLV", "XLVI", "XLVII", "XLVIII", "XLIX", "L", "LI", "LII", "LIII", "LIV", "LV", "LVI", "LVII", "LVIII", "LIX", "LX",
+            "LXI", "LXII", "LXIII", "LXIV", "LXV", "LXVI", "LXVII", "LXVIII", "LXIX", "LXX",
+            "LXXI", "LXXII", "LXXIII", "LXXIV", "LXXV", "LXXVI", "LXXVII", "LXXVIII", "LXXIX", "LXXX",
+            "LXXXI", "LXXXII", "LXXXIII", "LXXXIV", "LXXXV", "LXXXVI", "LXXXVII", "LXXXVIII", "LXXXIX", "XC",
+            "XCI", "XCII", "XCIII", "XCIV", "XCV", "XCVI", "XCVII", "XCVIII", "XCIX", "C"};
     static boolean langRome = false;
+    static String arabic;
 
 
     private static int romeToArab (String rome) {
@@ -42,8 +49,9 @@ public class Calculator {
     }
 
     private static String arabToRome (int numArabian) {
-        final String s = rome[numArabian];
-        return s;
+        arabic = rome[numArabian];
+        return arabic;
+
     }
 
     public static void main(String[] args) {
@@ -66,74 +74,69 @@ public class Calculator {
                     if (langRome == true) {
                         number1 = romeToArab(symbols[0]);
                         number2 = romeToArab(symbols[2]);
+                        //arabToRome(result);
                     }
                     if (langRome == false) {
                         number1 = Integer.parseInt(symbols[0]);
                         number2 = Integer.parseInt(symbols[2]);
+
                     }
-                        if (symbols[1].equals("+")) {
-                            operation = '+';
-                        } else if (symbols[1].equals("-")) {
-                            operation = '-';
-                        } else if (symbols[1].equals("*")) {
-                            operation = '*';
-                        } else if (symbols[1].equals("/")) {
-                            operation = '/';
-                        } else {
-                            throw new IllegalArgumentException("Неверный знак операции");
-                        }
+                    if (symbols[1].equals("+")) {
+                        operation = '+';
+                    } else if (symbols[1].equals("-")) {
+                        operation = '-';
+                    } else if (symbols[1].equals("*")) {
+                        operation = '*';
+                    } else if (symbols[1].equals("/")) {
+                        operation = '/';
+                    } else {
+                        throw new IllegalArgumentException("Неверный знак операции");
                     }
+                }
+                if ((number1 < 1 || number1 > 10) || (number2 < 1 || number2 > 10)) {
+                    throw new Exception("Только числа от 1 до 10");
+                }
 
                 result = calculate(number1, number2, operation);
             } catch (Exception e) {
                 System.out.println("Exception : " + e);
                 break;
             }
-//            for (int i = 0; i < line.length(); i++) {
-//                numbers[i] = line.charAt(i);
-//                if (numbers[i] == '+') {
-//                    operation = '+';
-//                }
-//                if (numbers[i] == '-') {
-//                    operation = '-';
-//                }
-//                if (numbers[i] == '*') {
-//                    operation = '*';
-//                }
-//                if (numbers[i] == '/') {
-//                    operation = '/';
-//                }
-//                System.out.print(operation);
-//            }
         }
-        }
+    }
 
     public static int calculate(int num1, int num2, char oper){
 
-            switch (oper) {
-                case '+':
-                    result = num1 + num2;
+        switch (oper) {
+            case '+':
+                result = num1 + num2;
+                break;
+            case '-':
+                result = num1 - num2;
+                break;
+            case '*':
+                result = num1 * num2;
+                break;
+            case '/':
+                try {
+                    result = num1 / num2;
+                } catch (ArithmeticException | InputMismatchException e) {
+                    System.out.println("Exception : " + e);
+                    System.out.println("Only integer non-zero parameters allowed");
                     break;
-                case '-':
-                    result = num1 - num2;
-                    break;
-                case '*':
-                    result = num1 * num2;
-                    break;
-                case '/':
-                    try {
-                        result = num1 / num2;
-                    } catch (ArithmeticException | InputMismatchException e) {
-                        System.out.println("Exception : " + e);
-                        System.out.println("Only integer non-zero parameters allowed");
-                        break;
-                    }
-                    break;
-                default:
-                    throw new IllegalArgumentException("Неверный знак операции");
-            }
-        System.out.println(result);
-            return result;
+                }
+                break;
+            default:
+                throw new IllegalArgumentException("Неверный знак операции");
+        }
+
+        if(langRome == true) {
+            arabToRome(result);
+            System.out.println(arabic);
+        } else {
+            System.out.println(result);
+        }
+        return result;
     }
 
 }
